@@ -1,0 +1,2 @@
+#!/bin/bash
+find ./ -type f -iname '*.gif' -execdir bash -c 'printf "%s\n" "${@%.gif}"' +bash {} + | colrm 1 2 | sort -f
