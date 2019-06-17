@@ -1,0 +1,2 @@
+#!/bin/bash
+xargs -d $'\n' -n 2 bash -c 'echo "$1"' +
