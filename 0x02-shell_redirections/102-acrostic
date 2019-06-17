@@ -1,2 +1,2 @@
 #!/bin/bash
-cut -c 1 acrostic | tr -d '\n' | paste
+sed -n 's/^\(.\).*/\1/g; H; ${g; s/\n//g; p}'
