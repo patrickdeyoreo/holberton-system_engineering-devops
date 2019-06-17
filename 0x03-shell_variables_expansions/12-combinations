@@ -1,1 +1,2 @@
 #!/bin/bash
+printf '%s\n' {a..n}{a..z} o{{a..n},{p..z}} {p..z}{a..z}
