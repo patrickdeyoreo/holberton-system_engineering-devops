@@ -1,0 +1,2 @@
+#!/bin/bash
+tail -n +2 | cut -f 1 | sort | uniq -c | sort -bnr | tr -s ' ' | cut -f 3 -d ' ' | head -n 11
