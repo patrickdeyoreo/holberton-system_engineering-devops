@@ -1,1 +1,20 @@
 #!/usr/bin/env bash
+#
+# Print 1 through 20
+
+i=0
+while (( i++ < 10 ))
+do
+    echo "$((i))"
+    case "$((i))" in
+        4)
+            echo 'bad luck from China'
+            ;;
+        9)
+            echo 'bad luck from Japan'
+            ;;
+        17)
+            echo 'bad luck from Italy'
+            ;;
+    esac
+done
