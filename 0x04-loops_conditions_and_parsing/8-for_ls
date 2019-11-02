@@ -1,1 +1,10 @@
 #!/usr/bin/env bash
+#
+# Display the contents of the current directory with prefixes stripped
+
+shopt -s nullglob
+
+for file in *
+do
+    echo "${file#*-}"
+done
