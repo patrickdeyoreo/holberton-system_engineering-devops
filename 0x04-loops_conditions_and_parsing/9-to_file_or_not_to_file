@@ -1,1 +1,22 @@
 #!/usr/bin/env bash
+#
+# Print information about the holbertonschool file
+
+file='holbertonschool'
+
+if [[ -e ${file} ]]
+then
+   printf '%s file exists\n' "${file}"
+   if [[ -s ${file} ]]
+   then
+       printf '%s file is not empty\n' "${file}"
+   else
+       printf '%s file is empty\n' "${file}"
+   fi
+   if [[ -f ${file} ]]
+   then
+       printf '%s file is a regular file\n' "${file}"
+   fi
+else
+   printf '%s file does not exist\n' "${file}"
+fi
