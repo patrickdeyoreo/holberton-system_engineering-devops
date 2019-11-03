@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #
-# Group clients by IP and HTTP status code
+# Group clients listed in Apache access log by IP and HTTP status code
 
-awk '{ print $1, $9 }' apache-access.log |
+awk '{ print $1,$9 }' "${1-apache-access.log}" |
+    sort -n -s -k 2 |
     sort -n -s -t '.' -k 1,1 -k 2,2 -k 3,3 -k 4,4 |
-    sort -n -s -t ' ' -k 2,2 |
     uniq -c |
     sort -b -n -r -k 1,1
