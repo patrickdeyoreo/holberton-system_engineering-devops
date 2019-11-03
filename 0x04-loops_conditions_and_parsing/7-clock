@@ -2,13 +2,13 @@
 #
 # Display the time for 12 hours and 59 minutes
 
-h=0
-while (( h < 12 ))
+hour=0
+while (( hour < 13 ))
 do
-    echo "Hour: $((h++))"
-    m=0
-    while (( ++m < 60 ))
+    echo "Hour: $((hour++))"
+    minute=1
+    while (( minute < 60 ))
     do
-        echo "$((m))"
+        echo "$((minute++))"
     done
 done
