@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
+#
+# Print each client IP and HTTP status code from the Apache access log
 
-ln -s "$(command -v sed)" awk
-
-PATH=":${PATH}"
-
-awk <apache-access.log '
-s/^\([^ ]\+\) .* \([1-5][0-9][0-9]\) [1-9][0-9]* .*$/\1 \2/
-' 
-
-rm awk
+awk '{ print $1, $9 }' apache-access.log
