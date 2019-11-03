@@ -3,7 +3,7 @@
 # Group clients by IP and HTTP status code
 
 awk '{ print $1, $9 }' apache-access.log |
-    LC_ALL=C sort -n -s -t '.' -k 1,1 -k 2,2 -k 3,3 -k 4,4 |
-    LC_ALL=C sort -b -n -s -k 2,2 |
-    LC_ALL=C uniq -c |
-    LC_ALL=C sort -b -n -r -k 1,1
+    sort -n -s -t '.' -k 1,1 -k 2,2 -k 3,3 -k 4,4 |
+    sort -n -s -t ' ' -k 2,2 |
+    uniq -c |
+    sort -b -n -r -k 1,1
