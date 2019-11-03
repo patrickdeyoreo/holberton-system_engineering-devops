@@ -3,7 +3,7 @@
 # Print 1 through 20
 
 i=0
-while (( i++ < 10 ))
+while (( i++ < 20 ))
 do
     echo "$((i))"
     case "$((i))" in
