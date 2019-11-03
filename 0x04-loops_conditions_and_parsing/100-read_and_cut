@@ -1,1 +1,9 @@
 #!/usr/bin/env bash
+#
+# Display login name, uid, and home directory for each entry in /etc/passwd
+# Format of /etc/passwd: <login>:<password>:<uid>:<gid>:<name>:<home>:<shell>
+
+while IFS=':' read -r login _ uid _ _ home _
+do
+    printf '%s:%s:%s\n' "${login}" "${uid}" "${home}"
+done </etc/passwd
