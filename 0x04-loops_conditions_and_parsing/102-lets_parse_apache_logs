@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
-awk()
-{
-    sed 's/^\([^ ]\+\) .* \([1-5][0-9][0-9]\) [1-9][0-9]* .*$/\1 \2/'
-}
+ln -s "$(command -v sed)" awk
 
-awk <apache-access.log
+PATH=":${PATH}"
+
+awk <apache-access.log '
+s/^\([^ ]\+\) .* \([1-5][0-9][0-9]\) [1-9][0-9]* .*$/\1 \2/
+' 
+
+rm awk
