@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 #
-# Kill an instance of 7-highlander
+# Kill all instances of 7-highlander
 
-pkill -f -o --signal KILL 7-highlander
+pkill -f --signal KILL 7-highlander
