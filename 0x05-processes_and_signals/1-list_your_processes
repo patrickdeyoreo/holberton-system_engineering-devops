@@ -2,5 +2,5 @@
 #
 # Display a list of currently running processes
 
-PS_FORMAT=user,pid,%cpu,%mem,vsz,rss,tty,stat,start_time,bsdtime,cmd \
-    ps -e --forest --sort user
+PS_FORMAT='user,pid,%cpu,%mem,vsz,rss,tty,stat,start_time,bsdtime,args
+' ps -e --forest --sort=user
