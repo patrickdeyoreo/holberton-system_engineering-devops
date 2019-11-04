@@ -2,7 +2,7 @@
 #
 # To infinity and beyond (respect SIGQUIT and SIGTERM)
 
-echo "$$" >| "${pidfile:=/var/run/holbertonscript.pid}"
+echo "$$" >| "${pidfile=/var/run/holbertonscript.pid}"
 trap '
   echo "Y U no love me?!"
 ' INT
