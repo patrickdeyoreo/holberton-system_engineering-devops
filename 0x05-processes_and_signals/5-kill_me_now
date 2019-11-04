@@ -2,7 +2,10 @@
 #
 # Kill an instance of 4-to_infinity_and_beyond
 
-if wait "$!" && read -r
+if wait "$!"
 then
-  kill -- "${REPLY}"
+    while read -r
+    do
+        kill "${REPLY}"
+    done
 fi < <(pgrep -f 4-to_infinity_and_beyond)
