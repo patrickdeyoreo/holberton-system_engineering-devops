@@ -14,11 +14,13 @@ declare -A message=(
 
 manage_my_process::start()
 {
-  [[ -x ${exepath} ]] && exec -- "${exepath}" & echo "$!" > "${pidfile}"
+  exec -- "${exepath}" &
+  echo "$!" > "${pidfile}"
 }
 
 manage_my_process::stop() {
-  [[ -f ${pidfile} ]] && kill -- "$(< "${pidfile}")" && rm -f -- "${pidfile}"
+  kill -- "$(< "${pidfile}")"
+  rm -f -- "${pidfile}"
 }
 
 manage_my_process::restart() {
@@ -28,7 +30,8 @@ manage_my_process::restart() {
 
 if (( $# == 1 )) && declare -F manage_my_process::"$1" > /dev/null
 then
-  manage_my_process::"$1" && printf '%s %s\n' "${exename}" "${message[$1]}"
+  manage_my_process::"$1"
+  printf '%s %s\n' "${exename}" "${message[$1]}"
 else
   printf 'Usage: %s {start | stop | restart}\n' "${exename}"
   exit 1
