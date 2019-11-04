@@ -1,1 +1,5 @@
 #!/usr/bin/env bash
+#
+# Get bash PIDs the right way
+
+pgrep -l bash
