@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
 #
-# To infinity and beyond (respect SIGQUIT and SIGTERM)
+# To infinity and beyond...
+# Write PID to pidfile (default '/var/run/holbertonscript.pid')
+# Remove pidfile and exit upon receiving SIGTERM or SIGQUIT
 
-echo "$$" >| "${pidfile=/var/run/holbertonscript.pid}"
+sleep() {
+  ! read -rt "$1"
+} <> <(:)
+
+echo "$$" >| "${pidfile:=/var/run/holbertonscript.pid}"
+
 trap '
   echo "Y U no love me?!"
 ' INT
@@ -15,11 +22,9 @@ trap '
   rm -f "${pidfile}" 2>/dev/null
   exit 143
 ' TERM
-sleep() {
-  read -t "$1" || return 0
-}
+
 while true
 do
   echo 'To infinity and beyond'
   sleep 2
-done <> <(:)
+done

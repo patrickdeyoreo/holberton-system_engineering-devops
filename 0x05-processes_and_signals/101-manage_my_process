@@ -1,1 +1,35 @@
 #!/usr/bin/env bash
+#
+# Manage the 'manage_my_process' daemon
+
+exename='manage_my_process'
+exepath="${BASH_SOURCE[0]%/*}/${exename}"
+pidfile="/var/run/my_process.pid"
+
+declare -A message=(
+  ['start']='started'
+  ['stop']='stopped'
+  ['restart']='restarted'
+)
+
+manage_my_process::start()
+{
+  [[ -x ${exepath} ]] && exec -- "${exepath}" & echo "$!" > "${pidfile}"
+}
+
+manage_my_process::stop() {
+  [[ -f ${pidfile} ]] && kill -- "$(< "${pidfile}")" && rm -f -- "${pidfile}"
+}
+
+manage_my_process::restart() {
+  manage_my_process::stop
+  manage_my_process::start
+}
+
+if (( $# == 1 )) && declare -F manage_my_process::"$1" > /dev/null
+then
+  manage_my_process::"$1" && printf '%s %s\n' "${exename}" "${message[$1]}"
+else
+  printf 'Usage: %s {start | stop | restart}\n' "${exename}"
+  exit 1
+fi
