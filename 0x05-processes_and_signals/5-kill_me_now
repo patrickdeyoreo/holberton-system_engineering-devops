@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 #
-# Kill an instance of 4-to_infinity_and_beyond
+# Kill all instances of 4-to_infinity_and_beyond
 
-if wait "$!"
-then
-    while read -r
-    do
-        kill "${REPLY}"
-    done
-fi < <(pgrep -f 4-to_infinity_and_beyond)
+pgrep -f 4-to_infinity_and_beyond | xargs kill
