@@ -1,1 +1,8 @@
 #!/usr/bin/env bash
+#
+# Kill an instance of 4-to_infinity_and_beyond
+
+if wait "$!" && read -r
+then
+  kill -- "${REPLY}"
+fi < <(pgrep -f 4-to_infinity_and_beyond)

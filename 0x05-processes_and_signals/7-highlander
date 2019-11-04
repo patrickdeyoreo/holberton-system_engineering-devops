@@ -1,1 +1,15 @@
 #!/usr/bin/env bash
+#
+# Don't stop - not even for SIGTERM
+
+trap '
+  echo "I am invincible!!!"
+' TERM
+sleep() {
+  read -t "$1" || return 0
+}
+while true
+do
+  echo 'To infinity and beyond'
+  sleep 2
+done <> <(:)

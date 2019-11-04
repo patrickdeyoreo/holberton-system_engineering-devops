@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#
+# Try to terminate an instance of 7-highlander
+
+pkill -f -o 7-highlander

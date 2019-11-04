@@ -2,8 +2,11 @@
 #
 # Repeat every two seconds
 
+sleep() {
+  read -t "$1" || return 0
+}
 while true
 do
-    echo 'To infinity and beyond'
-    sleep 2
-done
+  echo 'To infinity and beyond'
+  sleep 2
+done <> <(:)

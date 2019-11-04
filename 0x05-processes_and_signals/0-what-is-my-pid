@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 #
-# Print the process ID of each instance upon its invokation
+# Print the PID of each instance of this script upon invokation
 
 echo "$$"

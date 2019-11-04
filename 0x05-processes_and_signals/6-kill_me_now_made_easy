@@ -1,1 +1,5 @@
 #!/usr/bin/env bash
+#
+# Terminate an instance of 4-to_infinity_and_beyond the right way
+
+pkill -f -o 4-to_infinity_and_beyond

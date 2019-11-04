@@ -1,1 +1,25 @@
 #!/usr/bin/env bash
+#
+# To infinity and beyond (respect SIGQUIT and SIGTERM)
+
+echo "$$" >| "${pidfile:=/var/run/holbertonscript.pid}"
+trap '
+  echo "Y U no love me?!"
+' INT
+trap '
+  rm -f "${pidfile}" 2>/dev/null
+  exit 131
+' QUIT
+trap '
+  echo "I hate the kill command"
+  rm -f "${pidfile}" 2>/dev/null
+  exit 143
+' TERM
+sleep() {
+  read -t "$1" || return 0
+}
+while true
+do
+  echo 'To infinity and beyond'
+  sleep 2
+done <> <(:)
