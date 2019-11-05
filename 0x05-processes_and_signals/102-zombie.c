@@ -6,6 +6,11 @@
 #define STACKSIZE 8
 #define N_ZOMBIES 5
 
+/**
+ * infinite_while - loop forever
+ *
+ * Return: Never
+ */
 int infinite_while(void)
 {
 	while (1)
@@ -15,6 +20,11 @@ int infinite_while(void)
 	return (0);
 }
 
+/**
+ * main - spawn zombie processes
+ *
+ * Return: Never
+ */
 int main(void)
 {
 	pid_t zpid = 0;
