@@ -2,30 +2,32 @@
 #
 # Manage the 'manage_my_process' daemon
 
-PIDFILE='/var/run/my_process.pid'
-RELPATH="${0%/*}/manage_my_process"
+RELPATH="${BASH_SOURCE[0]%/*}/manage_my_process"
+PIDFILE="${XDG_RUNTIME_DIR}/my_process.pid"
 
-declare -A message=( )
+declare -A message
 
 manage_my_process::start() {
+  message['start']='manage_my_process started'
   exec -- "${RELPATH}" &
-  echo "$!" > "${PIDFILE}"
-} && message['start']='started'
+  echo "$!"
+} > "${PIDFILE}"
 
 manage_my_process::stop() {
-  kill -- "$(< "${PIDFILE}")"
+  message['stop']='manage_my_process stopped'
   rm -f -- "${PIDFILE}"
-} && message['stop']='stopped'
+  kill -- "$(< /dev/stdin)"
+} < "${PIDFILE}"
 
 manage_my_process::restart() {
+  message['restart']='manage_my_process restarted'
   manage_my_process::stop
   manage_my_process::start
-} && message['restart']='restarted'
+}
 
-if (( $# == 1 )) && [[ -v "message[$1]" ]]
+if (( $# == 1 )) && [[ $1 == @(start|stop|restart) ]]
 then
-  manage_my_process::"$1"
-  echo 'manage_my_process' "${message[$1]}"
+  "manage_my_process::$1" && echo "${message[$1]}"
 else
   echo 'Usage: manage_my_process {start|stop|restart}'
   exit 1
