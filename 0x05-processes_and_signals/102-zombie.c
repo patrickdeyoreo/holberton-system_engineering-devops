@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define STACKSIZE 8
 #define N_ZOMBIES 5
 
 /**
@@ -27,16 +26,16 @@ int infinite_while(void)
  */
 int main(void)
 {
-	pid_t zpid = 0;
-	int zcount = 0;
+	int zpid = 0;
+	int znum = 0;
 
-	while (zcount++ < N_ZOMBIES)
+	while (znum++ < N_ZOMBIES)
 	{
 		zpid = fork();
 		if (zpid)
 			printf("Zombie process created, PID: %d\n", zpid);
 		else
-			return (0);
+			return (EXIT_SUCCESS);
 	}
 	return (infinite_while());
 }
