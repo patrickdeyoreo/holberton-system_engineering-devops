@@ -4,7 +4,7 @@
 
 PROGRAM='manage_my_process'
 RELPATH="${0%/*}/${PROGRAM}"
-PIDFILE='/var/run/my_process.pid'
+PIDFILE="${PIDFILE:-/var/run/my_process.pid}"
 declare -A MESSAGES=(
   ['start']='started'
   ['stop']='stopped'
@@ -13,13 +13,16 @@ declare -A MESSAGES=(
 
 start() {
   exec -- "${RELPATH}" &
-  echo "$!"
-} > "${PIDFILE}"
+  echo "$!" > "${PIDFILE}"
+}
 
 stop() {
+  trap '
+  trap RETURN
   rm -f -- "${PIDFILE}"
-  kill -- "$(< /dev/stdin)"
-} < "${PIDFILE}"
+  ' RETURN
+  kill -- "$(< "${PIDFILE}")"
+}
 
 restart() {
   stop
