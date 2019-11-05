@@ -4,35 +4,34 @@
 
 exename='manage_my_process'
 exepath="${BASH_SOURCE[0]%/*}/${exename}"
-pidfile="/var/run/my_process.pid"
-
+pidfile="${XDG_RUNTIME_DIR}/my_process.pid"
 declare -A message=(
   ['start']='started'
   ['stop']='stopped'
   ['restart']='restarted'
 )
 
-manage_my_process::start()
-{
-  exec -- "${exepath}" &
-  echo "$!" > "${pidfile}"
+start() {
+  exec -- "${exepath}" & echo "$!" >| "${pidfile}"
 }
 
-manage_my_process::stop() {
+stop() {
+  trap '
+    trap RETURN
+    rm -f -- "${pidfile}"
+  ' RETURN
   kill -- "$(< "${pidfile}")"
-  rm -f -- "${pidfile}"
 }
 
-manage_my_process::restart() {
-  manage_my_process::stop
-  manage_my_process::start
+restart() {
+  stop
+  start
 }
 
-if (( $# == 1 )) && declare -F manage_my_process::"$1" > /dev/null
+if (( $# == 1 )) && [[ $1 == @(start|stop|restart) ]]
 then
-  manage_my_process::"$1"
-  printf '%s %s\n' "${exename}" "${message[$1]}"
+  "$1" && printf '%s %s\n' "${exename}" "${message[$1]}"
 else
-  printf 'Usage: %s {start | stop | restart}\n' "${exename}"
+  printf 'Usage: %s {start|stop|restart}\n' "${exename}"
   exit 1
 fi
