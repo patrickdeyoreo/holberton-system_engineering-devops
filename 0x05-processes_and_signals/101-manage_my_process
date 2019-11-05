@@ -2,37 +2,31 @@
 #
 # Manage the 'manage_my_process' daemon
 
-exename='manage_my_process'
-exepath="${BASH_SOURCE[0]%/*}/${exename}"
-pidfile="/var/run/my_process.pid"
+PIDFILE='/var/run/my_process.pid'
+RELPATH="${0%/*}/manage_my_process"
 
-declare -A message=(
-  ['start']='started'
-  ['stop']='stopped'
-  ['restart']='restarted'
-)
+declare -A message=( )
 
-manage_my_process::start()
-{
-  exec -- "${exepath}" &
-  echo "$!" > "${pidfile}"
-}
+manage_my_process::start() {
+  exec -- "${RELPATH}" &
+  echo "$!" > "${PIDFILE}"
+} && message['start']='started'
 
 manage_my_process::stop() {
-  kill -- "$(< "${pidfile}")"
-  rm -f -- "${pidfile}"
-}
+  kill -- "$(< "${PIDFILE}")"
+  rm -f -- "${PIDFILE}"
+} && message['stop']='stopped'
 
 manage_my_process::restart() {
   manage_my_process::stop
   manage_my_process::start
-}
+} && message['restart']='restarted'
 
-if (( $# == 1 )) && declare -F manage_my_process::"$1" > /dev/null
+if (( $# == 1 )) && [[ -v "message[$1]" ]]
 then
   manage_my_process::"$1"
-  printf '%s %s\n' "${exename}" "${message[$1]}"
+  echo 'manage_my_process' "${message[$1]}"
 else
-  printf 'Usage: %s {start | stop | restart}\n' "${exename}"
+  echo 'Usage: manage_my_process {start|stop|restart}'
   exit 1
 fi
