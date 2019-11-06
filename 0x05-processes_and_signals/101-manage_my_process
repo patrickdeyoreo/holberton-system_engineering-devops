@@ -5,9 +5,15 @@
 PROGRAM='manage_my_process'
 RELPATH="${0%/*}/${PROGRAM}"
 PIDFILE="${PIDFILE:-/var/run/my_process.pid}"
+declare -A MESSAGES=( 
+  ['start']='started'
+  ['stop']='stopped'
+  ['restart']='restarted'
+)
 
 start() {
-  { exec -- "${RELPATH}" & } && echo "$!" 1>| "${PIDFILE}"
+  exec -- "${RELPATH}" &
+  echo "$!" >| "${PIDFILE}"
 }
 
 stop() {
@@ -22,10 +28,6 @@ restart() {
   stop
   start
 }
-
-declare -A MESSAGES=( 
-  [start]='started' [stop]='stopped' [restart]='restarted'
-)
 
 if (( $# == 1 )) && [[ -v "MESSAGES[$1]" ]]
 then
