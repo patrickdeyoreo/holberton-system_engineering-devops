@@ -9,22 +9,24 @@ PIDFILE="${PIDFILE:-/var/run/my_process.pid}"
 start() {
   { exec -- "${RELPATH}" & } && echo "$!" 1>| "${PIDFILE}"
 }
+
 stop() {
   trap '
-  trap RETURN
-  rm -f -- "${PIDFILE}"
+    trap RETURN
+    rm -f -- "${PIDFILE}"
   ' RETURN
-  { kill -- "$(<"${PIDFILE}")"
-  } 2>/dev/null
+  kill -- "$(< "${PIDFILE}")" 2> /dev/null
 }
+
 restart() {
-  { kill -- "$(<"${PIDFILE}")"
-  } 2>/dev/null
-  { exec -- "${RELPATH}" & } && echo "$!" 1>| "${PIDFILE}"
+  stop
+  start
 }
+
 declare -A MESSAGES=( 
   [start]='started' [stop]='stopped' [restart]='restarted'
 )
+
 if (( $# == 1 )) && [[ -v "MESSAGES[$1]" ]]
 then
   "$1" && printf '%s %s\n' "${PROGRAM}" "${MESSAGES[$1]}"
