@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+#
+# Configure resolution of localhost to 127.0.0.2 and facebook.com to 8.8.8.8
+
+HOSTS='/etc/hosts'
+
+if (( ${UID:-$(id -u)} ))
+then
+    echo 'Must be run as root'
+    exit 1
+fi
+
+if ! tmpfile="$(mktemp)"
+then
+    echo 'Unable to create temporary file'
+    exit 1
+fi
+
+printf '%s\t%s\n' 127.0.0.2 localhost 8.8.8.8 facebook.com > "${tmpfile}"
+
+if [[ -f ${HOSTS} ]]
+then
+    if [[ -r ${HOSTS} ]]
+    then
+        cat "${HOSTS}" >> "${tmpfile}"
+    fi
+    chmod --reference="${HOSTS}" "${tmpfile}"
+else
+    chmod 0644 "${tmpfile}"
+fi
+
+mv -- "${tmpfile}" "${HOSTS}"
