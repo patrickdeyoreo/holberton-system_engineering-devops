@@ -22,11 +22,11 @@ if [[ -f ${HOSTS} ]]
 then
     if [[ -r ${HOSTS} ]]
     then
-        cat "${HOSTS}" >> "${tmpfile}"
+        cat -- "${HOSTS}" >> "${tmpfile}"
     fi
-    chmod --reference="${HOSTS}" "${tmpfile}"
+    chmod --reference="${HOSTS}" -- "${tmpfile}"
 else
-    chmod 0644 "${tmpfile}"
+    chmod 0644 -- "${tmpfile}"
 fi
 
 mv -- "${tmpfile}" "${HOSTS}"
