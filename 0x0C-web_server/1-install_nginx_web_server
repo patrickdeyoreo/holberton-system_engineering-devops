@@ -2,6 +2,7 @@
 #
 # Install NGINX on my server
 
+apt-get -y update
 apt-get -y install nginx
 
 cat > /var/www/html/index.html << 'EOF' 
@@ -14,3 +15,5 @@ cat > /var/www/html/index.html << 'EOF'
   </body>
 </html>
 EOF
+
+service nginx start
