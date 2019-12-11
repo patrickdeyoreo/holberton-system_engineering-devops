@@ -2,7 +2,7 @@
 #
 # Install NGINX on my server
 
-apt-get -qy install nginx
+apt-get -y install nginx
 
 cat > /var/www/html/index.html << 'EOF' 
 <html>
