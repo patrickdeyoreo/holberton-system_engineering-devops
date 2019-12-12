@@ -15,7 +15,7 @@ internal; \
 apt-get -y update
 apt-get -y install nginx
 
-sed -i 's@'"${PATTERN}"'@'"${REPLACE}"'@' /etc/nginx/sites-available/default
+sed -i "s@${PATTERN}@${REPLACE}@" /etc/nginx/sites-available/default
 
 cat > /var/www/html/index.html << 'EOF' 
 <html>
