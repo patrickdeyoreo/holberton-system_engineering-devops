@@ -4,13 +4,13 @@
 
 NYANCAT='https://www.youtube.com/watch?v=QH2-TGUlwu4'
 PATTERN='^\troot /var/www/html;$'
-REPLACE="&\\n\
-\\trewrite ^/redirect_me ${NYANCAT} permanent;\\n\
-\\terror_page 404 /custom_404.html;\\n\
-\\tlocation = /custom_404.html {\\n\
-\\troot /usr/share/nginx/html;\\n\
-\\tinternal;\\n\
-\\t}"
+REPLACE="& \
+rewrite ^/redirect_me ${NYANCAT} permanent; \
+error_page 404 /custom_404.html; \
+location = /custom_404.html { \
+root /usr/share/nginx/html; \
+internal; \
+}"
 
 apt-get -y update
 apt-get -y install nginx
@@ -39,6 +39,6 @@ cat > /usr/share/nginx/html/custom_404.html << 'EOF'
 </html>
 EOF
 
-service nginx restart || service nginx start
+service nginx restart
 
 ufw allow 'Nginx HTTP'
