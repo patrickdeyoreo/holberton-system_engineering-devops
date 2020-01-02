@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+#
+# Install and configure NGINX on a fresh Ubuntu server
+
+apt-get -y update
+apt-get -y install nginx
+
+# shellcheck disable=SC2154
+sed -i "/^http {$/a add_header X-Served-By ${HOSTNAME:-$(hostname)};" /etc/nginx/nginx.conf
+
+sed -i '/^\troot \/var\/www\/html;$/a rewrite ^/redirect_me https://www.google.com permanent; error_page 404 /custom_404.html; location = /custom_404.html { root /usr/share/nginx/html; internal; }' /etc/nginx/sites-available/default
+
+cat > /var/www/html/index.html << 'EOF' 
+<html>
+  <head>
+    <title>Holberton School</title>
+  </head>
+  <body>
+    <p>Holberton School for the win!</p>
+  </body>
+</html>
+EOF
+
+cat > /usr/share/nginx/html/custom_404.html << 'EOF' 
+<html>
+  <head>
+    <title>Page Not Found</title>
+  </head>
+  <body>
+    <p>Ceci n'est pas une page</p>
+  </body>
+</html>
+EOF
+
+service nginx restart
+
+ufw allow 'Nginx HTTP'
