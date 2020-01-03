@@ -12,7 +12,10 @@ $default_conf_line = "\
 "
 
 $custom_response_header_match = '^\s*http\s+\{\s*$'
-$custom_response_header_line = "add_header X-Served-By ${servername};"
+$custom_response_header_line = "\
+http {
+	add_header X-Served-By ${servername};
+"
 
 $index_html = "\
 <html>
