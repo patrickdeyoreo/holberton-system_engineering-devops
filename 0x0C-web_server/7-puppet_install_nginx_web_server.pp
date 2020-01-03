@@ -41,21 +41,21 @@ service { 'nginx':
 exec { 'default_conf':
   command => "sed -i '/^\\troot \\/var\\/www\\/html;$/a rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent; error_page 404 /custom_404.html; location = /custom_404.html { root /usr/share/nginx/html; internal; }' /etc/nginx/sites-available/default",
   path    => '/usr/sbin:/usr/bin:/sbin:/bin',
-  require => Package['ngnix'],
+  require => Package['nginx'],
 }
 
 file { '/var/www/html/index.html':
   ensure  => present,
   replace => 'no',
   content => $index_html,
-  require => Package['ngnix'],
+  require => Package['nginx'],
 }
 
 file { '/usr/share/nginx/html/custom_404.html':
   ensure  => present,
   replace => 'no',
   content => $custom_404_html,
-  require => Package['ngnix'],
+  require => Package['nginx'],
 }
 
 exec { "ufw allow 'Nginx HTTP'":
