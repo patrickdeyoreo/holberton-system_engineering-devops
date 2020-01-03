@@ -61,6 +61,7 @@ exec { 'custom_response_header':
   command => 'sed -i "/^http {$/a add_header X-Served-By $(hostname);" /etc/nginx/nginx.conf',
   path    => '/usr/sbin:/usr/bin:/sbin:/bin',
   require => Package['nginx'],
+  notify  => Service['nginx'],
 }
 
 file { '/var/www/html/index.html':
