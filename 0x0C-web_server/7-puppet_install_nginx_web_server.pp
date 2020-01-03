@@ -1,17 +1,5 @@
 # Install & configure NGINX on a new Ubuntu 16.04 server
 
-$default_conf_match = '^\s*root\s+/var/www/html;\s*$'
-
-$default_conf_line = "\
-	root /var/www/html;
-	rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;
-	error_page 404 /custom_404.html;
-	location = /custom_404.html {
-		root /usr/share/nginx/html;
-		internal;
-	}
-"
-
 $index_html = "\
 <html>
   <head>
@@ -39,6 +27,7 @@ exec { 'apt update':
 }
 
 package { 'nginx':
+  ensure  => 'installed',
   require => Exec['apt update'],
 }
 
@@ -46,14 +35,12 @@ service { 'nginx':
   ensure     => 'running',
   enable     => true,
   hasrestart => true,
+  require    => Exec['default_conf'],
 }
 
-file_line { 'default_conf':
-  ensure  => present,
-  path    => '/etc/nginx/sites-available/default',
-  line    => $default_conf_line,
-  match   => $default_conf_match,
-  notify  => Service['nginx'],
+exec { 'default_conf':
+  command => "sed -i '/^\\troot \\/var\\/www\\/html;$/a rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent; error_page 404 /custom_404.html; location = /custom_404.html { root /usr/share/nginx/html; internal; }' /etc/nginx/sites-available/default",
+  path    => '/usr/sbin:/usr/bin:/sbin:/bin',
   require => Package['ngnix'],
 }
 
