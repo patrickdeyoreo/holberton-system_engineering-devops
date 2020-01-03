@@ -1,5 +1,19 @@
 # Install & configure NGINX on a new Ubuntu 16.04 server
 
+$default_conf_match = '^\s*root\s+/var/www/html;\s*$'
+$default_conf_line = "\
+	root /var/www/html;
+	rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;
+	error_page 404 /custom_404.html;
+	location = /custom_404.html {
+		root /usr/share/nginx/html;
+		internal;
+	}
+"
+
+$custom_response_header_match = '^\s*http\s+\{\s*$'
+$custom_response_header_line = "add_header X-Served-By ${servername};"
+
 $index_html = "\
 <html>
   <head>
@@ -38,15 +52,18 @@ service { 'nginx':
   require    => Exec['default_conf'],
 }
 
-exec { 'default_conf':
-  command => "sed -i '/^\\troot \\/var\\/www\\/html;$/a rewrite ^/redirect_me https://www.google.com permanent; error_page 404 /custom_404.html; location = /custom_404.html { root /usr/share/nginx/html; internal; }' /etc/nginx/sites-available/default",
-  path    => '/usr/sbin:/usr/bin:/sbin:/bin',
+file_line { 'default_conf':
+  path    => '/etc/nginx/sites-available/default',
+  line    => $default_conf_line,
+  match   => $default_conf_match,
   require => Package['nginx'],
+  notify  => Service['nginx'],
 }
 
-exec { 'custom_response_header':
-  command => 'sed -i "/^http {$/a add_header X-Served-By $(hostname);" /etc/nginx/nginx.conf',
-  path    => '/usr/sbin:/usr/bin:/sbin:/bin',
+file_line { 'custom_response_header':
+  path    => '/etc/nginx/nginx.conf',
+  line    => $custom_response_header_match,
+  match   => $custom_response_header_line,
   require => Package['nginx'],
 }
 
