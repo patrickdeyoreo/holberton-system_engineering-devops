@@ -39,7 +39,7 @@ service { 'nginx':
 }
 
 exec { 'default_conf':
-  command => "sed -i '/^\\troot \\/var\\/www\\/html;$/a rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent; error_page 404 /custom_404.html; location = /custom_404.html { root /usr/share/nginx/html; internal; }' /etc/nginx/sites-available/default",
+  command => "sed -i '/^\\troot \\/var\\/www\\/html;$/a rewrite ^/redirect_me https://www.google.com permanent; error_page 404 /custom_404.html; location = /custom_404.html { root /usr/share/nginx/html; internal; }' /etc/nginx/sites-available/default",
   path    => '/usr/sbin:/usr/bin:/sbin:/bin',
   require => Package['nginx'],
 }
