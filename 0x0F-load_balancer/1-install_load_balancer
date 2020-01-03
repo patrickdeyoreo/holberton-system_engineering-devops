@@ -14,7 +14,7 @@ backend web-backend
 	server 801-web-02 34.73.252.236:80 check
 
 frontend web-frontend
-	bind 34.73.94.209:80
+	bind *:80
 	mode http
 	default_backend web-backend
 EOF
