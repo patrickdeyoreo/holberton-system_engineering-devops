@@ -54,7 +54,6 @@ Host *
     SendEnv LANG LC_*
     HashKnownHosts yes
     GSSAPIAuthentication yes
-    GSSAPIDelegateCredentials no
 #
 # Google Compute Engine times out connections after 10 minutes of inactivity.
 # Keep alive ssh connections by sending a packet every 2 minutes.
