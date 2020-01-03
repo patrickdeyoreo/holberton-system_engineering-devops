@@ -5,6 +5,6 @@ file { '/tmp/holberton':
   replace => 'no',
   group   => 'www-data',
   owner   => 'www-data',
-  mode    => '0644',
+  mode    => '0744',
   content => "I love Puppet\n",
 }
