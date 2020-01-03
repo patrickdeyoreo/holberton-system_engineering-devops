@@ -62,8 +62,8 @@ file_line { 'default_conf':
 
 file_line { 'custom_response_header':
   path    => '/etc/nginx/nginx.conf',
-  line    => $custom_response_header_match,
-  match   => $custom_response_header_line,
+  line    => $custom_response_header_line,
+  match   => $custom_response_header_match,
   require => Package['nginx'],
 }
 
