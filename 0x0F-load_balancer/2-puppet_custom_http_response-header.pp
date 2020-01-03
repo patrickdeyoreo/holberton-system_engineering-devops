@@ -11,12 +11,6 @@ $default_conf_line = "\
 	}
 "
 
-$custom_response_header_match = '^\s*http\s+\{\s*$'
-$custom_response_header_line = "\
-http {
-	add_header X-Served-By ${servername};
-"
-
 $index_html = "\
 <html>
   <head>
@@ -63,10 +57,9 @@ file_line { 'default_conf':
   notify  => Service['nginx'],
 }
 
-file_line { 'custom_response_header':
-  path    => '/etc/nginx/nginx.conf',
-  line    => $custom_response_header_line,
-  match   => $custom_response_header_match,
+exec { 'custom_response_header':
+  command => 'sed -i "/^http {$/a add_header X-Served-By $(hostname);" /etc/nginx/nginx.conf',
+  path    => '/usr/sbin:/usr/bin:/sbin:/bin',
   require => Package['nginx'],
 }
 
