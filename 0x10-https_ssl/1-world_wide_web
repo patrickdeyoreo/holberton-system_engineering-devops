@@ -4,9 +4,9 @@
 #
 # Audit fully-qualified domain names for AirBnB clone
 #
-# If subdomains are provided, they will be audited in the provded order.
-# Otherwise, the subdomains 'www', 'lb-01', 'web-01', and 'web-02' will
-# be audited in the order listed.
+# If subdomains are given, they will be audited in the order provided.
+# Otherwise the subdomains 'www', 'lb-01', 'web-01', and 'web-02' will
+# be audited (in the order listed).
 
 function audit
 {
