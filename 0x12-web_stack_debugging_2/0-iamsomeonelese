@@ -2,4 +2,10 @@
 #
 # Run 'whoami' as the user passed as an argument
 
-su -c 'whoami' "$1"
+if (( $# ))
+then
+  su -c 'whoami' "$1"
+else
+  printf 'Usage: %s USER\n' "${0##*/}" >&2
+  exit 1
+fi
