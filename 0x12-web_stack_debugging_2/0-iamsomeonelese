@@ -4,7 +4,7 @@
 
 if (( $# ))
 then
-  su -c 'whoami' "$1"
+  sudo -u "$1" 'whoami'
 else
   printf 'Usage: %s USER\n' "${0##*/}" >&2
   exit 1
