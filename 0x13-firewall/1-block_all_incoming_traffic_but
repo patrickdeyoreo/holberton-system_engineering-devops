@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#
+# Block all incoming traffic not on one of port 22, 80, or 443
+
+apt update
+apt install -y ufw
+ufw disable
+ufw allow 22
+ufw allow 80
+ufw allow 443
+ufw enable
