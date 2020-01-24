@@ -1,2 +1,2 @@
-# holberton-system_engineering-devops
-#### This is an introductory system engineering project focusing on shell basics
+# Holberton - System Engineering / DevOps
+## DevOps, Networking and Infrastructure Projects at Holberton School
