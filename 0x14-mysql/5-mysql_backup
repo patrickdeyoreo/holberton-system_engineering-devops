@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#
+# backup a mysql database
+
+BACKUP='backup.sql'
+ARCHIVE="$(data '+%0d-%0m-%Y.tar.gz')"
+
+mysqldump --user=root --password="$1" --all-databases > "${BACKUP}"
+tar -czf "${ARCHIVE}" "${BACKUP}"
