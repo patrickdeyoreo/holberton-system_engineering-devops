@@ -15,17 +15,16 @@ DEST = 'todo_all_employees.json'
 if __name__ == '__main__':
 
     users = requests.get(ROUTES['users'](), timeout=5).json()
-    data = []
+    data = {}
     for user in users:
         user_id = str(user['id'])
+        data[user_id] = []
         todo = requests.get(ROUTES['todos'](user_id), timeout=5).json()
         for task in todo:
-            data.append({
-                user_id: [{
-                    "username": user['username'],
-                    "task": task['title'],
-                    "completed": task['completed'],
-                } for task in todo]
+            data[user_id].append({
+                "username": user['username'],
+                "task": task['title'],
+                "completed": task['completed'],
             })
     with open(DEST, 'w') as ostream:
-        ostream.write(json.dumps(data)[1:-1])
+        json.dump(data, ostream)
