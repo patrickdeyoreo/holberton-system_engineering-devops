@@ -3,9 +3,7 @@
 Summarize an employee's TODO list and write it to a file as a CSV
 """
 import json
-import os
 import requests
-import sys
 
 PREFIX = 'https://jsonplaceholder.typicode.com'
 ROUTES = {
