@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Summarize an employee's TODO list and write it to a file as a CSV
+Summarize the TODO lists of all employees and write it to a file as JSON
 """
 from json import dump
 from requests import get
