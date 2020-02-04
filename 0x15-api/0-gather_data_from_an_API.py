@@ -18,7 +18,5 @@ if __name__ == '__main__':
     todo = get('/'.join([API, 'todos']), params={'userId': args.id}).json()
     completed = [task for task in todo if task['completed'] is True]
     print('Employee {} is done with tasks({}/{}):'.format(
-        user['name'], len(completed), len(todo)
-    ))
-    for task in completed:
-        print('\t {}'.format(task['title']))
+        user['name'], len(completed), len(todo)))
+    print('\n'.join('\t {}'.format(task['title']) for task in completed))

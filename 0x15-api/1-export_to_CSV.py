@@ -2,27 +2,21 @@
 """
 Summarize an employee's TODO list and write it to a file as a CSV
 """
-import argparse
-import csv
-import os
-import requests
-import sys
+from argparse import ArgumentParser
+from csv import QUOTE_ALL, writer
+from os import path
+from requests import get
+from sys import argv
 
-PREFIX = 'https://jsonplaceholder.typicode.com'
-ROUTES = {
-    'users': lambda user_id: '/'.join([PREFIX, 'users', user_id]),
-    'todos': lambda user_id: '/'.join([PREFIX, 'users', user_id, 'todos'])
-}
+USERS = 'https://jsonplaceholder.typicode.com/users'
+TODOS = 'https://jsonplaceholder.typicode.com/todos'
 
 if __name__ == '__main__':
-
-    parser = argparse.ArgumentParser(prog=os.path.basename(sys.argv[0]))
+    parser = ArgumentParser(prog=path.basename(argv[0]))
     parser.add_argument('id', type=int, help='employee ID')
     args = parser.parse_args()
-    dest = '.'.join([str(args.id), 'csv'])
-    user = requests.get(ROUTES['users'](str(args.id)), timeout=5).json()
-    todo = requests.get(ROUTES['todos'](str(args.id)), timeout=5).json()
-    data = [[str(args.id), user['username'], task['completed'], task['title']]
-            for task in todo]
-    with open(dest, 'w', newline='') as ostream:
-        csv.writer(ostream, quoting=csv.QUOTE_ALL).writerows(data)
+    user = get('/'.join([USERS, str(args.id)])).json()
+    with open('.'.join([str(args.id), 'csv']), 'w', newline='') as ostream:
+        writer(ostream, quoting=QUOTE_ALL).writerows(
+            [str(args.id), user['username'], task['completed'], task['title']]
+            for task in get(TODOS, params={'userId': args.id}).json())
