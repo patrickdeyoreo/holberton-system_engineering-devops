@@ -23,18 +23,18 @@ def count_words(subreddit, word_list, **kwargs):
         headers={'User-Agent': USER_AGENT},
         params=params,
         allow_redirects=False,
-        timeout=30
+        timeout=30,
     )
     if r.status_code == 200:
         results = r.json()['data']
-        for hot in results['children']:
-            for word in hot['data']['title'].split():
+        for post in results['children']:
+            for word in post['data']['title'].split():
                 if word.lower() in totals:
                     totals[word.lower()] += 1
         if results['after'] is not None:
             kwargs['after'] = results['after']
             kwargs['count'] += kwargs['limit']
             return count_words(subreddit, word_list, **kwargs)
-        word_list = sorted(totals, key=totals.get, reverse=True)
-        for word in filter(totals.get, word_list):
+        word_list = filter(totals.get, totals)
+        for word in sorted(word_list, key=totals.get, reverse=True):
             print('{}: {}'.format(word, totals[word]))

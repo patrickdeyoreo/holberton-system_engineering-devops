@@ -22,11 +22,11 @@ def recurse(subreddit, titles=[], **kwargs):
         headers={'User-Agent': USER_AGENT},
         params=params,
         allow_redirects=False,
-        timeout=30
+        timeout=30,
     )
     if r.status_code == 200:
         results = r.json()['data']
-        titles.extend(hot['data']['title'] for hot in results['children'])
+        titles.extend(post['data']['title'] for post in results['children'])
         if results['after'] is not None:
             kwargs['after'] = results['after']
             kwargs['count'] += kwargs['limit']
