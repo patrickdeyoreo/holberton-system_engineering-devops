@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Get the titles of all the hot posts for a given subreddit
+Get the titles of the hot posts for a given subreddit
 """
 import requests
 
@@ -13,9 +13,9 @@ def recurse(subreddit, titles=[], **kwargs):
     Query reddit for all hot posts of a subreddit
     """
     params = {
-        'after': kwargs.get('after'),
-        'count': kwargs.get('count', 0),
-        'limit': kwargs.get('limit', 100)
+        'after': kwargs.setdefault('after'),
+        'count': kwargs.setdefault('count', 0),
+        'limit': kwargs.setdefault('limit', 100)
     }
     r = requests.get(
         URL.format(subreddit),
@@ -28,9 +28,8 @@ def recurse(subreddit, titles=[], **kwargs):
         results = r.json()['data']
         titles.extend(hot['data']['title'] for hot in results['children'])
         if results['after'] is not None:
-            params['after'] = results['after']
-            params['count'] += params['limit']
-            kwargs.update(params)
+            kwargs['after'] = results['after']
+            kwargs['count'] += kwargs['limit']
             return recurse(subreddit, titles, **kwargs)
         return titles
     return None

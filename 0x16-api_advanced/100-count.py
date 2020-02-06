@@ -14,9 +14,9 @@ def count_words(subreddit, word_list, **kwargs):
     """
     totals = kwargs.setdefault('totals', dict.fromkeys(word_list, 0))
     params = {
-        'after': kwargs.get('after'),
-        'count': kwargs.get('count', 0),
-        'limit': kwargs.get('limit', 100)
+        'after': kwargs.setdefault('after'),
+        'count': kwargs.setdefault('count', 0),
+        'limit': kwargs.setdefault('limit', 100)
     }
     r = requests.get(
         URL.format(subreddit),
@@ -32,9 +32,8 @@ def count_words(subreddit, word_list, **kwargs):
                 if word.lower() in totals:
                     totals[word.lower()] += 1
         if results['after'] is not None:
-            params['after'] = results['after']
-            params['count'] += params['limit']
-            kwargs.update(params)
+            kwargs['after'] = results['after']
+            kwargs['count'] += kwargs['limit']
             return count_words(subreddit, word_list, **kwargs)
         word_list = sorted(totals, key=totals.get, reverse=True)
         for word in filter(totals.get, word_list):
