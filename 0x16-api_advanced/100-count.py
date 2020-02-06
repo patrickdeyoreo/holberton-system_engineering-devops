@@ -12,8 +12,7 @@ def count_words(subreddit, word_list, **kwargs):
     """
     Query reddit for hot posts and print total occurrences of each keyword
     """
-    words = set(word.strip().casefold() for word in word_list)
-    totals = kwargs.setdefault('totals', dict.fromkeys(words, 0))
+    totals = kwargs.setdefault('totals', dict.fromkeys(word_list, 0))
     params = {
         'after': kwargs.setdefault('after'),
         'limit': kwargs.setdefault('limit', 100),
@@ -31,11 +30,11 @@ def count_words(subreddit, word_list, **kwargs):
                  for word in post['data']['title'].split()]
         for word in words:
             for key in totals:
-                if key == word.casefold():
+                if key.casefold() == word.casefold():
                     totals[key] += 1
         if results['after'] is not None:
             kwargs['after'] = results['after']
             return count_words(subreddit, [], **kwargs)
         keys = filter(totals.get, totals)
-        for key in sorted(keys, key=lambda k: (-totals[k], k)):
+        for key in sorted(keys, key=lambda k: (-1 * totals[k], k)):
             print('{}: {}'.format(key, totals[key]))
