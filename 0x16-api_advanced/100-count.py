@@ -29,14 +29,15 @@ def count_words(subreddit, words, **kwargs):
         results = r.json()['data']
         for post in results['children']:
             words = post['data']['title'].split()
-            words = {w.casefold() for w in words}
-            for key in totals:
-                if key.casefold() in words:
-                    totals[key] += 1
+            words = (w.casefold() for w in words)
+            for word in words:
+                for key in totals:
+                    if key.casefold() in words:
+                        totals[key] += 1
         if results['after'] is not None:
             kwargs['after'] = results['after']
             kwargs['count'] += kwargs['limit']
-            return count_words(subreddit, totals, **kwargs)
+            return count_words(subreddit, None, **kwargs)
         keys = filter(totals.get, totals)
         keys.sort(key=totals.get, reverse=True)
         for key in keys:
