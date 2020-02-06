@@ -8,11 +8,11 @@ URL = 'https://www.reddit.com/r/{}/hot.json'
 USER_AGENT = 'Mozilla/5.0 (Linux x86_64; rv:72.0) Gecko/20100101 Firefox/72.0'
 
 
-def count_words(subreddit, words, **kwargs):
+def count_words(subreddit, word_list, **kwargs):
     """
     Query reddit for hot posts and print total occurrences of each keyword
     """
-    totals = kwargs.setdefault('totals', dict.fromkeys(words, 0))
+    totals = kwargs.setdefault('totals', dict.fromkeys(word_list, 0))
     params = {
         'after': kwargs.setdefault('after'),
         'count': kwargs.setdefault('count', 0),
@@ -29,10 +29,9 @@ def count_words(subreddit, words, **kwargs):
         results = r.json()['data']
         for post in results['children']:
             words = post['data']['title'].split()
-            words = [w.casefold() for w in words]
             for word in words:
                 for key in totals:
-                    if key.casefold() in words:
+                    if key.casefold() == word.casefold():
                         totals[key] += 1
         if results['after'] is not None:
             kwargs['after'] = results['after']
