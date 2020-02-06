@@ -12,10 +12,10 @@ def count_words(subreddit, word_list, **kwargs):
     """
     Query reddit for hot posts and print total occurrences of each keyword
     """
-    totals = kwargs.setdefault('totals', dict.fromkeys(word_list, 0))
+    words = set(word.strip().casefold() for word in word_list)
+    totals = kwargs.setdefault('totals', dict.fromkeys(words, 0))
     params = {
         'after': kwargs.setdefault('after'),
-        'count': kwargs.setdefault('count', 0),
         'limit': kwargs.setdefault('limit', 100),
     }
     r = requests.get(
@@ -27,15 +27,14 @@ def count_words(subreddit, word_list, **kwargs):
     )
     if r.status_code == 200:
         results = r.json()['data']
-        for post in results['children']:
-            words = post['data']['title'].split()
-            for word in words:
-                for key in totals:
-                    if key.casefold() == word.casefold():
-                        totals[key] += 1
+        words = [word for post in results['children']
+                 for word in post['data']['title'].split()]
+        for word in words:
+            for key in totals:
+                if key == word.casefold():
+                    totals[key] += 1
         if results['after'] is not None:
             kwargs['after'] = results['after']
-            kwargs['count'] += kwargs['limit']
             return count_words(subreddit, [], **kwargs)
         keys = filter(totals.get, totals)
         for key in sorted(keys, key=lambda k: (-totals[k], k)):
