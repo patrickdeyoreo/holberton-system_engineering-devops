@@ -38,5 +38,5 @@ def count_words(subreddit, word_list, **kwargs):
             kwargs['count'] += kwargs['limit']
             return count_words(subreddit, [], **kwargs)
         keys = filter(totals.get, totals)
-        for key in sorted(keys, key=totals.get, reverse=True):
+        for key in sorted(keys, key=lambda k: (-totals[k], k)):
             print('{}: {}'.format(key, totals[key]))
