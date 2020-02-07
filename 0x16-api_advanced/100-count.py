@@ -2,6 +2,7 @@
 """
 Show number of occurrences of keywords in hot post titles (case-insensitive)
 """
+import re
 import requests
 
 URL = 'https://www.reddit.com/r/{}/hot.json'
@@ -26,15 +27,15 @@ def count_words(subreddit, word_list, **kwargs):
     )
     if r.status_code == 200:
         results = r.json()['data']
-        words = [word for post in results['children']
-                 for word in post['data']['title'].split()]
-        for word in words:
-            for key in totals:
-                if key.casefold() == word.casefold():
-                    totals[key] += 1
+        titles = [post['data']['title'] for post in results['children']]
+        for key in totals:
+            for title in titles:
+                totals[key] += len(
+                    re.findall(r'(?:^| )' + key + '(?:$| )', title, re.I)
+                )
         if results['after'] is not None:
             kwargs['after'] = results['after']
             return count_words(subreddit, [], **kwargs)
         keys = filter(totals.get, totals)
-        for key in sorted(keys, key=lambda k: (-1 * totals[k], k)):
+        for key in sorted(keys, key=lambda k: (-totals[k], k)):
             print('{}: {}'.format(key, totals[key]))
