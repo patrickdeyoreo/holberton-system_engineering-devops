@@ -1,13 +1,11 @@
-# Debug th web stack
+# Debug the web stack
 
-file {'new':
-  path   => '/var/www/html/wp-includes/class-wp-locale.phpp',
+file {'/var/www/html/wp-includes/class-wp-locale.phpp':
   ensure => file,
   source => '/var/www/html/wp-includes/class-wp-locale.php',
-  after  => File['old']
+  before => File['/var/www/html/wp-includes/class-wp-locale.php']
 }
 
-file {'old':
-  path   => '/var/www/html/wp-includes/class-wp-locale.php',
+file {'/var/www/html/wp-includes/class-wp-locale.php':
   ensure => absent
 }
