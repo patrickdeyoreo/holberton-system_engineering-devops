@@ -37,18 +37,18 @@ server {
 	server_name _;
 
 	# Serve static content for AirBnB Clone
-	root /data/current/web_dynamic/static/;
+	root /data/current/web_dynamic/;
 
 	# Add index.php to the list if you are using PHP
 	index index.html index.htm index.nginx-debian.html;
 
 	# WSGI server hosting HBnB dynamic content at port 5003
-	location / {
+	location = / {
 		# First attempt to serve request as file, then
 		# as directory, then fall back to displaying a 404.
-		#try_files $uri $uri/ =404;
+		try_files $uri $uri/ =404;
 		include proxy_params;
-		proxy_pass http://0.0.0.0:5003;
+		proxy_pass http://0.0.0.0:5003/2-hbnb;
 	}
 
 	# WSGI server hosting HBnB API at port 5002
@@ -71,7 +71,7 @@ server {
 
 	# HBNB static
 	location /hbnb_static/ {
-		alias /static/current/;
+		alias /data/current/web_static/;
 	}
 
 	# Custom 404 error page
