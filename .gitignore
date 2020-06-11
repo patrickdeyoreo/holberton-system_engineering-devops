@@ -1,2 +1,8 @@
-/0x00-shell_basics/holberton
-/0x00-shell_basics/thisisanholbertonfile
+*~
+*.py[cod]
+*.so
+*.sw[op]
+tags
+.tags
+.DS_Store
+.vscode
